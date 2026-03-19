@@ -1,5 +1,6 @@
 import io
 import base64
+from typing import TypedDict
 
 import zxingcpp
 from PIL import Image
@@ -10,13 +11,20 @@ class AztecDecodeError(Exception):
     pass
 
 
+class DecodeResult(TypedDict):
+    data_base64: str
+    size: int
+    is_uic: bool
+
+
 def _to_images(data: bytes) -> list[Image.Image]:
     if data[:4] == b"%PDF":
-        return convert_from_bytes(data, dpi=200)
+        pages: list[Image.Image] = convert_from_bytes(data, dpi=200)
+        return pages
     return [Image.open(io.BytesIO(data))]
 
 
-def decode_aztec(data: bytes) -> dict:
+def decode_aztec(data: bytes) -> DecodeResult:
     images = _to_images(data)
 
     for img in images:
