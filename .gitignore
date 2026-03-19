@@ -11,6 +11,7 @@ env/
 # Environment variables
 .env
 .env.*
+!.env.example
 
 # Exploration / test files (not part of the service)
 *.png

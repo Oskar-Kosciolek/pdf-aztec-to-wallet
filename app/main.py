@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import tickets
+from app.routers import tickets, wallet
 
 app = FastAPI(
     title="Aztec Ticket Microservice",
@@ -8,6 +8,7 @@ app = FastAPI(
 )
 
 app.include_router(tickets.router)
+app.include_router(wallet.router)
 
 
 @app.get("/health", tags=["meta"])
