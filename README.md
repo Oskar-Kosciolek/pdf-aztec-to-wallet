@@ -10,7 +10,7 @@ FastAPI microservice do dekodowania kodów Aztec z biletów kolejowych (standard
 ### Instalacja Poppler (Windows)
 
 ```bash
-winget install -e --id osdn.poppler
+winget install -e --id oschwartz10612.Poppler
 ```
 
 Lub pobierz ręcznie i dodaj folder `bin/` do zmiennej środowiskowej `PATH`.
