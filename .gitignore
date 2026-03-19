@@ -18,6 +18,7 @@ env/
 *.jpeg
 *.jpg
 *.bin
+*.pdf
 aztec.py
 aztec_code_generator_p.py
 aztec_code_test.png

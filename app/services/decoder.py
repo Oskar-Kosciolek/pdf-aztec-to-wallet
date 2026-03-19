@@ -19,9 +19,17 @@ class DecodeResult(TypedDict):
 
 def _to_images(data: bytes) -> list[Image.Image]:
     if data[:4] == b"%PDF":
-        pages: list[Image.Image] = convert_from_bytes(data, dpi=200)
-        return pages
-    return [Image.open(io.BytesIO(data))]
+        try:
+            pages: list[Image.Image] = convert_from_bytes(data, dpi=200)
+            return pages
+        except Exception as e:
+            raise AztecDecodeError(
+                f"Nie można wyrenderować PDF: {e}"
+            ) from e
+    try:
+        return [Image.open(io.BytesIO(data))]
+    except Exception as e:
+        raise AztecDecodeError(f"Nie można otworzyć obrazu: {e}") from e
 
 
 def decode_aztec(data: bytes) -> DecodeResult:
