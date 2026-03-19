@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+.env.*
+
+# Exploration / test files (not part of the service)
+*.png
+*.jpeg
+*.jpg
+*.bin
+aztec.py
+aztec_code_generator_p.py
+aztec_code_test.png
+encode_again.py
+test_segno.py
+zlib_header.py
+moj_bilet.jpeg
+decrypted_ticket.bin
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
