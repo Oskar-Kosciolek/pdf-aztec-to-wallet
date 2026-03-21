@@ -6,6 +6,7 @@ from fastapi import APIRouter, HTTPException, UploadFile, File
 from pydantic import BaseModel
 
 from app.services.decoder import decode_aztec, AztecDecodeError
+from app.services.uic_parser import decode_pkp_text, parse_fields
 
 router = APIRouter(prefix="/tickets", tags=["tickets"])
 
@@ -71,9 +72,8 @@ def inspect_ticket(body: InspectRequest):
             try:
                 decompressed = zlib.decompressobj().decompress(raw[zlib_offset:])
                 result["decompressed_size_bytes"] = len(decompressed)
-                result["readable_preview"] = "".join(
-                    chr(b) if 32 <= b <= 126 else "." for b in decompressed
-                )
+                result["readable_preview"] = decode_pkp_text(decompressed)
+                result["parsed_fields"] = parse_fields(decompressed)
             except zlib.error:
                 result["decompressed_error"] = "Błąd dekompresji — dane mogą być zaszyfrowane"
 
