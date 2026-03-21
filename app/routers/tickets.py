@@ -60,7 +60,21 @@ def inspect_ticket(body: InspectRequest):
         "size_bytes": len(raw),
         "header": header,
         "standard": "UIC_918_3" if is_uic else None,
+        "raw_preview": "".join(chr(b) if 32 <= b <= 126 else f"\\x{b:02x}" for b in raw[:64]),
     }
+
+    # Detect hex-encoded payload (all bytes are 0-9 / a-f ASCII)
+    is_hex = len(raw) % 2 == 0 and all(chr(b) in "0123456789abcdef" for b in raw)
+    if is_hex and not is_uic:
+        result["encoding"] = "hex"
+        try:
+            decoded = bytes.fromhex(raw.decode("ascii"))
+            result["hex_decoded_size_bytes"] = len(decoded)
+            result["hex_decoded_preview"] = "".join(
+                chr(b) if 32 <= b <= 126 else f"\\x{b:02x}" for b in decoded[:128]
+            )
+        except Exception as e:
+            result["hex_decode_error"] = str(e)
 
     if is_uic:
         zlib_magic = b"\x78\x9c"
